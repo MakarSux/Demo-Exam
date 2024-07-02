@@ -1,0 +1,84 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<div class="container">
+    <h3 class="text-center my-2">Безопасный город</h3>
+    <p class="text">
+        Целью создания и внедрения проекта «Безопасный город»
+        является повышение общего уровня общественной безопасности,
+        правопорядка и безопасности среды обитания за счёт существенного улучшения координации
+        сил и служб, ответственных за решение этих задач, путём внедрения на базе пилотных
+        муниципальных образований комплексной информационной системы, обеспечивающей
+        прогнозирование, мониторинг, предупреждение и ликвидацию возможных угроз,
+        а также контроль устранения последствий кризисных ситуаций и происшествий
+        с интеграцией под её управлением действий информационно-управляющих
+        подсистем дежурно-диспетчерских, муниципальных служб для их оперативного
+        взаимодействия в интересах соответствующих муниципальных образований.
+    </p>
+</div>
+
+<h3 class="text-center">Ваши заявления</h3>
+<section id="statements">
+    <div class="container d-flex justify-content-end my-5">
+        <input class="search me-2 form-control" placeholder="Поиск" />
+        <button class="sort  me-2 btn btn-secondary" data-sort="name">
+            Сортировать по имени
+        </button>
+        <button class="sort  me-2 btn btn-secondary" data-sort="adress">
+            Сортировать по адресу
+        </button>
+        <button class="sort  me-2 btn btn-secondary" data-sort="date">
+            Сортировать по дате
+        </button>
+    </div>
+
+    <div class="container list">
+        {% if statements %}
+        {% for statement in statements %}
+        <div class="my-3 item">
+            <h3 class="name">{{ statement.name }}</h3>
+            <p class="adress">{{ statement.adress }}</p>
+            <p class="description">{{ statement.description }}</p>
+            <p class="date">{{ statement.date }}</p>
+
+            {% if user.is_superuser %}
+            <div class="d-flex flex-wrap justify-content-end align-items-center">
+                <a href="{% url 'task-delete' statement.id %}" class="btn btn-warning me-3">Удалить</a>
+                <a href="{% url 'task-update' statement.id %}" class="btn btn-info">Peдактировать</a>
+            </div>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>Нет заявлений</p>
+        {% endif %}
+    </div>
+
+</section>
+
+{% else %}
+<div class="container text-center">
+    <h2>Регистрация</h2>
+    <h3>Вы уже зарегистрированы? <a href="{% url 'login' %}">Вход</a></h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+    </form>
+</div>
+
+{% endif %}
+<script>
+
+    var options = {
+        valueNames: ['name', 'adress', 'description', 'date']
+    };
+
+    var userList = new List('statements', options);
+
+</script>
+{% endblock %}
