@@ -11,4 +11,13 @@
   </form>
 </div>
 
+
+<script>
+  document.getElementById('id_username').classList.add('form-control');
+  document.getElementById('id_password').classList.add('form-control');
+
+  document.getElementById('id_username').placeholder = 'Введите логин'
+  document.getElementById('id_password').placeholder = 'Введите пароль'
+</script>
+
 {% endblock %}

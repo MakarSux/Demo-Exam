@@ -61,16 +61,27 @@
 </section>
 
 {% else %}
-<div class="container text-center">
-    <h2>Регистрация</h2>
+<div class="container">
+    <h2 class="text-center">Регистрация</h2>
     <h3>Вы уже зарегистрированы? <a href="{% url 'login' %}">Вход</a></h3>
-    <form method="post">
+    <form method="post" class="">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
     </form>
 </div>
 
+<script>
+    document.getElementById('id_phone_number').classList.add('form-control');
+    document.getElementById('id_full_name').classList.add('form-control');
+    document.getElementById('id_city').classList.add('form-control');
+    document.getElementById('id_password1').classList.add('form-control');
+    document.getElementById('id_password2').classList.add('form-control');
+
+    document.getElementById('id_phone_number').placeholder = '+7(XXX)-XXX-XX-XX'
+    document.getElementById('id_full_name').placeholder = 'ФИО'
+    document.getElementById('id_city').placeholder = 'Город'
+</script>
 {% endif %}
 <script>
 

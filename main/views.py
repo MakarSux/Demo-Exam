@@ -5,7 +5,7 @@ from django.views.generic import DeleteView, UpdateView
 from .forms import SignUpForm, StatementForm
 from .models import Profile, Statement
 
-
+# данная функция обрабатывает главную страницу страницу 
 def index(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
