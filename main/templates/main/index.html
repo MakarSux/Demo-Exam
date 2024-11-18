@@ -39,7 +39,7 @@
         {% if statements %}
         {% for statement in statements %}
         <div class="my-3 item">
-            <h3 class="name">{{ statement.name }}</h3>
+            <h3 class="name">{{ statement.name }} <span class="ms-5 text-success">{{ statement.status }}</span></h3>
             <p class="adress">{{ statement.adress }}</p>
             <p class="description">{{ statement.description }}</p>
             <p class="date">{{ statement.date }}</p>

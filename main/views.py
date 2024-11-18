@@ -1,5 +1,5 @@
 from django.contrib.auth import login, authenticate, logout
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DeleteView, UpdateView
 
 from .forms import SignUpForm, StatementForm
@@ -36,18 +36,17 @@ def logout_view(request):
 
 def create_statement(request):
     if request.method == 'POST':
-        form = StatementForm(request.POST)
+        form = StatementForm(request.POST, user=request.user)
         if form.is_valid():
-            form.save()
+            statement = form.save(commit=False)
+            statement.save(user=request.user)
             return redirect('/')
     else:
-        form = StatementForm()
+        form = StatementForm(user=request.user)
     return render(request, 'main/create_statement.html', {'form': form})
-
 
 def about(request):
     return render(request, 'main/about.html')
-
 
 class TaskDeleteView(DeleteView):
     model = Statement
@@ -57,5 +56,10 @@ class TaskDeleteView(DeleteView):
 class TaskUpdateView(UpdateView):
     model = Statement
     template_name = 'main/create_statement.html'
-    form_class=StatementForm
+    form_class = StatementForm
     success_url = '/'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
